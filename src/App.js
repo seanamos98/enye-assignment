@@ -7,6 +7,8 @@ import ReactPaginate from "react-paginate";
 function App() {
   const [profiles, setProfiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
+  const [filterProfiles, setFilterProfiles] = useState([]);
 
   const PER_PAGE = 20;
 
@@ -23,6 +25,15 @@ function App() {
     fetchData();
   }, []);
 
+  // filter the profile
+  useEffect(() => {
+    setFilterProfiles(
+      profiles.filter((profile) =>
+        profile.FirstName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, profiles]);
+
   // this code will handle changing of pages
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
@@ -33,51 +44,21 @@ function App() {
     .slice(offset, offset + PER_PAGE)
     .map((profile) => (
       <ul key={profile.id}>
-        <li>
-          <a href="/">{profile.FirstName}</a>
-        </li>
-        <li>
-          <a href="/">{profile.LastName}</a>
-        </li>
-        <li>
-          <a href="/">{profile.Gender}</a>
-        </li>
-        <li>
-          <a href="/">{profile.Latititude}</a>
-        </li>
-        <li>
-          <a href="/">{profile.Longitude}</a>
-        </li>
-        <li>
-          <a href="/">{profile.CreditCardNumber}</a>
-        </li>
-        <li>
-          <a href="/">{profile.CreditCardType}</a>
-        </li>
-        <li>
-          <a href="/">{profile.Email}</a>
-        </li>
-        <li>
-          <a href="/">{profile.DomainName}</a>
-        </li>
-        <li>
-          <a href="/">{profile.PhoneNumber}</a>
-        </li>
-        <li>
-          <a href="/">{profile.MacAddress}</a>
-        </li>
-        <li>
-          <a href="/">{profile.URL}</a>
-        </li>
-        <li>
-          <a href="/">{profile.UserName}</a>
-        </li>
-        <li>
-          <a href="/">{profile.LastLogin}</a>
-        </li>
-        <li>
-          <a href="/">{profile.PaymentMethod}</a>
-        </li>
+        <li>{profile.FirstName}</li>
+        <li>{profile.LastName}</li>
+        <li>{profile.Gender}</li>
+        <li>{profile.Latititude}</li>
+        <li>{profile.Longitude}</li>
+        <li>{profile.CreditCardNumber}</li>
+        <li>{profile.CreditCardType}</li>
+        <li>{profile.Email}</li>
+        <li>{profile.DomainName}</li>
+        <li>{profile.PhoneNumber}</li>
+        <li>{profile.MacAddress}</li>
+        <li>{profile.URL}</li>
+        <li>{profile.UserName}</li>
+        <li>{profile.LastLogin}</li>
+        <li>{profile.PaymentMethod}</li>
       </ul>
     ));
 
@@ -85,7 +66,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      <Header setSearch={setSearch} />
 
       <ReactPaginate
         previousLabel={"prev"}
@@ -98,7 +79,11 @@ function App() {
         disabledClassName={"pagination__link--disabled"}
         activeClassName={"pagination__link--active"}
       />
-      {currentPageData}
+      {filterProfiles.map((profile, id) => (
+        <p key={id} {...profile}>
+          {currentPageData}
+        </p>
+      ))}
     </div>
   );
 }

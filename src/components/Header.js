@@ -3,7 +3,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import "./Header.css";
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   return (
     <>
       <header className="header">
@@ -16,6 +16,7 @@ const Header = () => {
         <div className="header__search">
           <input
             type="search"
+            onChange={(e) => setSearch(e.target.value)}
             className="header__searchInput"
             placeholder="Search"
           />
