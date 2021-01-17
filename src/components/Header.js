@@ -10,7 +10,7 @@ const Header = ({ setSearch }) => {
         <div className="header__logo">
           <a href="/">
             <span className="header__logoSpan">E</span>
-            <span>Enye</span>
+            <span>Tosin</span>
           </a>
         </div>
         <div className="header__search">

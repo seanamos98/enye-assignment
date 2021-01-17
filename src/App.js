@@ -28,8 +28,11 @@ function App() {
   // filter the profile
   useEffect(() => {
     setFilterProfiles(
-      profiles.filter((profile) =>
-        profile.FirstName.toLowerCase().includes(search.toLowerCase())
+      profiles.filter(
+        (profile) =>
+          profile.LastName.toLowerCase().includes(search.toLowerCase()) ||
+          profile.LastName.toLowerCase().includes(search.toLowerCase()) ||
+          profile.Email.toLowerCase().includes(search.toLowerCase())
       )
     );
   }, [search, profiles]);
@@ -43,7 +46,7 @@ function App() {
   const currentPageData = profiles
     .slice(offset, offset + PER_PAGE)
     .map((profile) => (
-      <ul key={profile.id}>
+      <ul key={profile.FirstName}>
         <li>{profile.FirstName}</li>
         <li>{profile.LastName}</li>
         <li>{profile.Gender}</li>
@@ -63,22 +66,24 @@ function App() {
     ));
 
   const pageCount = Math.ceil(profiles.length / PER_PAGE);
+  const pageLines = profiles[0] && Object.keys(profiles[0]);
 
   return (
     <div className="app">
       <Header setSearch={setSearch} />
 
       <ReactPaginate
-        previousLabel={"prev"}
-        nextLabel={"next"}
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
         pageCount={pageCount}
-        onPageChangeClick={handlePageClick}
+        onPageChange={handlePageClick}
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}
         disabledClassName={"pagination__link--disabled"}
         activeClassName={"pagination__link--active"}
       />
+
       {filterProfiles.map((profile, id) => (
         <p key={id} {...profile}>
           {currentPageData}
